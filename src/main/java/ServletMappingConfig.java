@@ -8,7 +8,7 @@ public class ServletMappingConfig {
      static {
          list.add(new ServletMapping("servlet1","","MyRouter"));
          list.add(new ServletMapping("servlet2","data","MyRouter2"));
-
+         list.add(new ServletMapping("servlet3","/favicon.ico","MyRouter3"));
      }
 
 }

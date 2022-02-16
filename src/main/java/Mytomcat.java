@@ -55,13 +55,7 @@ public class Mytomcat {
                 if (client != null) {
                     System.out.println("服务器已经接送到客户端请求");
                     InputStream in = client.getInputStream();
-//                    int len = -1;
-//                    byte[] bytes = new byte[2048];
-//
-//                    if ((len = in.read(bytes)) != -1) {
-//                        String r = new String(bytes, 0, len);
-//                        System.out.println(r);
-//                    }
+
 
                     Myrequest request = new Myrequest(in);
                     OutputStream out = client.getOutputStream();
@@ -87,7 +81,7 @@ public class Mytomcat {
       public void init(){
 
               for (ServletMapping servlet : ServletMappingConfig.list) {
-                  System.out.println(servlet.getUrl());
+
                   serverspool.put(servlet.getUrl(), servlet.getClazz());
               }
               if(serverspool.size()==0){
@@ -98,8 +92,8 @@ public class Mytomcat {
       public void dispath(Myrequest request,MyResponse response){
           try {
                   if(clazz==null) {
-                      clazz = serverspool.get(request.getIntiPath());
-                      System.out.println(clazz);
+                      clazz = serverspool.get(request.getContentpath());
+
                   }
                   Class<Servlet> m = (Class<Servlet>) Class.forName(clazz);
                   Servlet s = m.getDeclaredConstructor().newInstance();

@@ -1,60 +1,60 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Myrequest {
     String method;
-    String path;
-    String IntiPath;
+    String contentpath;
+    String servletpath;
     String data;
     String request;
-    String url;
-    protected Myrequest(InputStream in){
-        int len=-1;
-        byte[] bytes=new byte[2048];
+    String requesturl;
+    String paramrter;
+    protected Myrequest(InputStream in) {
+        int len = -1;
+        byte[] bytes = new byte[2048];
         try {
-            if((len=in.read(bytes))!=-1){
-                request=new String(bytes,0,len);
+            if ((len = in.read(bytes)) > 0) {
+                request = new String(bytes, 0, len);
+                //System.out.println(request);
+                String temp = request.split("\n")[0];
+                method = temp.split("\\s")[0];
+                System.out.println("请求方法:" + method);
+                requesturl = temp.split("\\s")[1];
+                System.out.println("url:" + requesturl);
+                if (requesturl.equals("/")) {
+                    contentpath = "";
+                } else {
+                    contentpath = requesturl.split("/")[1];
+                }
+                System.out.println("虚拟目录:" + contentpath);
 
-                String temp=request.split("\n")[0];
-                method=temp.split("\\s")[0];
-                System.out.println("请求方法:"+method);
-                IntiPath=temp.split("\\s")[1];
-                System.out.println("地址:"+IntiPath);
-//                data=data.split("\n")[1];
-                path=temp.split("\\s")[1].split("/")[1];
-                System.out.println("二级地址:"+path);
+                if ((!contentpath.equals("favicon.ico"))&&(!contentpath.equals(""))&&(!requesturl.endsWith(contentpath))) {
+                    servletpath = requesturl.split("/")[2];
+                    System.out.println("二级目录:" + servletpath);
+                    paramrter = requesturl.split("\\?")[1];
+                    System.out.println("参数:" + paramrter);
+                }
+
+
+
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch(IOException e){
+             e.printStackTrace();
         }
+
     }
 
     public String getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
+    public String getData(){
 
-    public String getPath() {
-
-        return path;
-    }
-
-    public String getIntiPath() {
-        return IntiPath;
-    }
-
-    public void setIntiPath(String intiPath) {
-        IntiPath = intiPath;
-    }
-
-   public String getUrl(){
-        return url;
-   }
-
-    public String getData() {
         return data;
+    }
+    public String getContentpath(){
+       return contentpath;
     }
 }
